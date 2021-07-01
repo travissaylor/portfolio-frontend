@@ -24,6 +24,8 @@ import {
     ChevronRightIcon,
 } from "@chakra-ui/icons"
 
+import NextLink from "next/link"
+
 export default function Nav() {
     const { isOpen, onToggle } = useDisclosure()
     const { colorMode, toggleColorMode } = useColorMode()
@@ -59,15 +61,17 @@ export default function Nav() {
                 <Flex
                     flex={{ base: 1 }}
                     justify={{ base: "center", md: "start" }}>
-                    <Text
-                        textAlign={useBreakpointValue({
-                            base: "center",
-                            md: "left",
-                        })}
-                        fontFamily={"heading"}
-                        color={useColorModeValue("gray.800", "white")}>
-                        Logo
-                    </Text>
+                    <NextLink href="/">
+                        <Link
+                            textAlign={useBreakpointValue({
+                                base: "center",
+                                md: "left",
+                            })}
+                            fontFamily={"heading"}
+                            color={useColorModeValue("gray.800", "white")}>
+                            Travis <b>Saylor</b>
+                        </Link>
+                    </NextLink>
 
                     <Flex display={{ base: "none", md: "flex" }} ml={10}>
                         <DesktopNav />
@@ -83,6 +87,7 @@ export default function Nav() {
                         onChange={toggleColorMode}
                         colorScheme="teal"
                         size="lg"
+                        isChecked={colorMode === "dark" ? true : false}
                     />
                 </Stack>
             </Flex>
@@ -107,7 +112,6 @@ const DesktopNav = () => {
                         <PopoverTrigger>
                             <Link
                                 p={2}
-                                href={navItem.href ?? "#"}
                                 fontSize={"sm"}
                                 fontWeight={500}
                                 color={linkColor}
@@ -115,7 +119,9 @@ const DesktopNav = () => {
                                     textDecoration: "none",
                                     color: linkHoverColor,
                                 }}>
-                                {navItem.label}
+                                <NextLink href={navItem.href ?? "#"}>
+                                    {navItem.label}
+                                </NextLink>
                             </Link>
                         </PopoverTrigger>
 
@@ -207,7 +213,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
             <Flex
                 py={2}
                 as={Link}
-                href={href ?? "#"}
+                href={children && children.length > 0 ? "#" : href ?? "#"}
                 justify={"space-between"}
                 align={"center"}
                 _hover={{
@@ -261,41 +267,37 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
     {
-        label: "Inspiration",
-        children: [
-            {
-                label: "Explore Design Work",
-                subLabel: "Trending Design to inspire you",
-                href: "#",
-            },
-            {
-                label: "New & Noteworthy",
-                subLabel: "Up-and-coming Designers",
-                href: "#",
-            },
-        ],
+        label: "Portfolio",
+        href: "/projects",
     },
     {
-        label: "Find Work",
-        children: [
-            {
-                label: "Job Board",
-                subLabel: "Find your dream design job",
-                href: "#",
-            },
-            {
-                label: "Freelance Projects",
-                subLabel: "An exclusive list for contract work",
-                href: "#",
-            },
-        ],
-    },
-    {
-        label: "Learn Design",
+        label: "Resume",
         href: "#",
     },
     {
-        label: "Hire Designers",
+        label: "About",
         href: "#",
     },
+    {
+        label: "Contact",
+        href: "#",
+    },
+    // Example of nav with subnav items
+    // {
+    //     label: "Portfolio",
+    //     href: "/projects",
+    //     children: [
+    //         {
+    //             label: "Web Apps",
+    //             subLabel: "Checkout the web projects that I've worked on",
+    //             href: "#",
+    //         },
+    //         {
+    //             label: "Mobile Apps",
+    //             subLabel:
+    //                 "Mobile dev has been an awesome experience. Check out some of my work.",
+    //             href: "#",
+    //         },
+    //     ],
+    // },
 ]
